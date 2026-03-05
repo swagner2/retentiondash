@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klaviyo Retention Dashboard – Shopify + Klaviyo Metrics in One View</title>
+<meta name="description" content="The only dashboard that combines your Shopify and Klaviyo data so DTC brand owners and email marketers can clearly see retention, revenue, and where to grow." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+<style>
+/* ========== RESET ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #f0f4f8;
+  color: #1e2d3d;
+  font-size: 17px;
+  line-height: 1.7;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; }
+
+.container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+.container--wide { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #0d1f35;
+}
+
+/* BUTTONS */
+.btn-orange {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff7c20, #ff4500);
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 18px 40px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
+  box-shadow: 0 4px 20px rgba(255,80,0,0.35);
+  text-align: center;
+}
+.btn-orange:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,80,0,0.5); }
+.btn-orange--large { font-size: 18px; padding: 22px 52px; }
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: #1565c0;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 8px;
+  border: 2px solid #1565c0;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-outline:hover { background: #1565c0; color: #fff; }
+
+.eyebrow {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #e65100;
+  margin-bottom: 12px;
+}
+.divider { border: none; border-top: 1px solid #ccd8e4; margin: 0; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(150deg, #0d47a1 0%, #1565c0 50%, #1e88e5 100%);
+  padding: 60px 0 72px;
+  text-align: center;
+}
+.author-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 60px;
+  padding: 10px 22px 10px 10px;
+  margin-bottom: 36px;
+  color: #fff;
+  transition: background 0.2s;
+  backdrop-filter: blur(6px);
+}
+.author-link:hover { background: rgba(255,255,255,0.22); }
+.author-photo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.4); }
+.author-text { text-align: left; }
+.author-name { font-weight: 800; font-size: 15px; color: #fff; display: block; line-height: 1.2; }
+.author-role { font-size: 13px; color: rgba(255,255,255,0.72); display: block; }
+.verified-icon { width: 22px; height: 22px; }
+
+.hero__headline { font-size: clamp(30px, 4.8vw, 56px); font-weight: 800; max-width: 820px; margin: 0 auto 22px; line-height: 1.18; color: #fff; }
+.hero__headline strong { color: #ffcc02; }
+.hero__sub { font-size: 18px; color: rgba(255,255,255,0.88); max-width: 600px; margin: 0 auto 36px; }
+.hero__cta-block { margin-bottom: 48px; }
+
+.platform-logos { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 52px; }
+.platform-logos img { height: 34px; width: auto; opacity: 0.9; filter: brightness(10) grayscale(1); transition: opacity 0.2s; }
+.platform-logos img:hover { opacity: 1; }
+
+.social-proof { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.social-proof__number { font-family: 'Open Sans', sans-serif; font-size: 48px; font-weight: 800; color: #ffcc02; line-height: 1; }
+.social-proof__text { font-size: 15px; color: rgba(255,255,255,0.8); max-width: 260px; text-align: left; }
+.social-proof__avatars { display: block; width: 120px; filter: brightness(10) grayscale(1); opacity: 0.65; }
+
+/* FACT SECTION */
+.fact-section { background: #fff; padding: 80px 0; text-align: center; }
+.fact-section .eyebrow { display: block; margin-bottom: 16px; }
+.fact-section__headline { font-size: clamp(28px, 4vw, 50px); font-weight: 800; max-width: 780px; margin: 0 auto 24px; line-height: 1.15; color: #0d1f35; }
+.fact-section__headline em { font-style: normal; color: #1565c0; }
+.fact-accent { font-size: clamp(20px, 3vw, 30px); font-weight: 800; color: #0d1f35; margin-bottom: 28px; }
+.fact-accent span { color: #e65100; }
+.fact-section p { font-size: 17px; color: #4a6278; max-width: 640px; margin: 0 auto 18px; }
+.fact-section h2 { font-size: clamp(24px, 3.2vw, 38px); font-weight: 800; max-width: 720px; margin: 48px auto 24px; color: #0d1f35; }
+.fact-list { list-style: none; max-width: 680px; margin: 0 auto; text-align: left; display: flex; flex-direction: column; gap: 14px; }
+.fact-list li { display: flex; gap: 12px; font-size: 16px; color: #4a6278; align-items: flex-start; }
+.fact-list li::before { content: '✕'; color: #e53935; font-weight: 800; font-size: 14px; flex-shrink: 0; margin-top: 3px; }
+
+/* COMPARE */
+.compare-section { background: #eaf1fb; padding: 80px 0; }
+.compare-section h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; text-align: center; max-width: 820px; margin: 0 auto 56px; color: #0d1f35; }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+@media (max-width: 680px) { .compare-grid { grid-template-columns: 1fr; } }
+.compare-col--bad { background: #fff5f5; border: 1.5px solid #ffcdd2; border-radius: 14px; padding: 30px; }
+.compare-col--good { background: #f0f7ff; border: 1.5px solid #bbdefb; border-radius: 14px; padding: 30px; }
+.compare-col h3 { font-size: 17px; font-weight: 800; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid rgba(0,0,0,0.07); }
+.compare-col--bad h3 { color: #c62828; }
+.compare-col--good h3 { color: #1565c0; }
+.compare-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.compare-list li { display: flex; gap: 10px; font-size: 15px; color: #3a5068; align-items: flex-start; line-height: 1.55; }
+.compare-list li .icon { flex-shrink: 0; font-size: 13px; font-weight: 800; margin-top: 2px; }
+.compare-col--bad .icon { color: #e53935; }
+.compare-col--good .icon { color: #1565c0; }
+.compare-section__cta-text { text-align: center; max-width: 760px; margin: 56px auto 0; font-size: 17px; color: #4a6278; line-height: 1.75; }
+.compare-section__cta-text strong { color: #0d1f35; }
+
+/* PRODUCT INTRO */
+.product-intro { background: #fff; padding: 80px 0; text-align: center; }
+.product-intro h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; max-width: 780px; margin: 0 auto 32px; color: #0d1f35; }
+.product-intro__img { width: 100%; border-radius: 12px; margin-bottom: 36px; border: 1px solid #ccd8e4; box-shadow: 0 8px 32px rgba(21,101,192,0.1); }
+.product-intro p { font-size: 17px; color: #4a6278; max-width: 680px; margin: 0 auto 16px; }
+.product-intro p strong { color: #0d1f35; }
+.inline-testi { background: #f0f7ff; border: 1px solid #bbdefb; border-radius: 12px; padding: 28px 36px; max-width: 680px; margin: 32px auto 0; text-align: left; }
+.inline-testi__stars img { height: 20px; margin-bottom: 12px; }
+.inline-testi__handle { font-size: 13px; color: #7a9ab8; margin-bottom: 10px; }
+.inline-testi__quote { font-size: 16px; color: #2e4156; line-height: 1.7; margin-bottom: 18px; }
+.inline-testi__author { display: flex; align-items: center; gap: 12px; }
+.inline-testi__author-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.inline-testi__name { font-weight: 800; font-size: 14px; color: #0d1f35; }
+.inline-testi__role { font-size: 12px; color: #7a9ab8; }
+
+/* FEATURES */
+.features-section { background: #f0f4f8; padding: 80px 0; }
+.features-section__intro { text-align: center; margin-bottom: 64px; }
+.features-section__intro h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; max-width: 760px; margin: 0 auto; color: #0d1f35; }
+.feature-item { margin-bottom: 32px; background: #fff; border-radius: 16px; border: 1px solid #ccd8e4; padding: 48px 40px; box-shadow: 0 2px 16px rgba(21,101,192,0.06); }
+.feature-item:last-child { margin-bottom: 0; }
+.feature-item__headline { font-size: clamp(20px, 2.8vw, 32px); font-weight: 800; max-width: 780px; margin: 0 auto 18px; text-align: center; color: #0d1f35; }
+.feature-item__text { font-size: 16px; color: #4a6278; max-width: 700px; margin: 0 auto 32px; text-align: center; line-height: 1.75; }
+.feature-item__img { display: block; margin: 0 auto; max-width: 820px; width: 100%; border-radius: 10px; border: 1px solid #ccd8e4; box-shadow: 0 4px 20px rgba(21,101,192,0.08); }
+
+/* PRICING */
+.pricing-section { background: #1565c0; padding: 80px 0; text-align: center; }
+.pricing-section__pre { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); margin-bottom: 12px; }
+.pricing-section h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; max-width: 760px; margin: 0 auto 40px; color: #fff; }
+.pricing-section__mockup { max-width: 480px; margin: 0 auto 48px; }
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 860px; margin: 0 auto; }
+@media (max-width: 680px) { .pricing-grid { grid-template-columns: 1fr; } }
+.pricing-card { background: #fff; border: 2px solid #ccd8e4; border-radius: 16px; padding: 36px; text-align: left; position: relative; box-shadow: 0 4px 24px rgba(0,0,0,0.12); }
+.pricing-card--featured { border-color: #ff5500; }
+.pricing-card__badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ff7c20, #ff4500); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 18px; border-radius: 100px; white-space: nowrap; box-shadow: 0 2px 12px rgba(255,80,0,0.4); }
+.pricing-card__label { font-weight: 800; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #7a9ab8; margin-bottom: 4px; }
+.pricing-card__title { font-size: 22px; font-weight: 800; color: #0d1f35; margin-bottom: 4px; }
+.pricing-card__subtitle { font-size: 13px; font-style: italic; color: #7a9ab8; margin-bottom: 20px; }
+.pricing-card__price { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+.price-old { font-size: 22px; font-weight: 700; color: #b0bec5; text-decoration: line-through; }
+.price-main { font-size: 52px; font-weight: 800; color: #0d1f35; line-height: 1; }
+.price-period { font-size: 15px; color: #7a9ab8; }
+.pricing-card__note { font-size: 12px; color: #7a9ab8; margin-bottom: 6px; }
+.pricing-card__sale-tag { display: inline-block; background: #fff3e0; border: 1px solid #ffb74d; color: #e65100; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 100px; margin-bottom: 22px; }
+.pricing-card hr { border: none; border-top: 1px solid #e4edf5; margin: 20px 0; }
+.pricing-card h3 { font-size: 15px; font-weight: 800; margin-bottom: 16px; color: #0d1f35; }
+.pricing-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.pricing-features li { display: flex; gap: 10px; font-size: 14px; color: #3a5068; align-items: flex-start; line-height: 1.5; }
+.pricing-features li::before { content: '✓'; color: #1565c0; font-weight: 800; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.pricing-card .btn-orange, .pricing-card .btn-outline { width: 100%; display: block; text-align: center; }
+.trust-row { margin-top: 20px; }
+.trust-row img { max-width: 300px; margin: 0 auto; }
+.rating-block { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 36px; flex-wrap: wrap; }
+.rating-number { font-size: 40px; font-weight: 800; color: #fff; }
+.rating-stars img { height: 22px; }
+.rating-count { font-size: 13px; color: rgba(255,255,255,0.6); }
+.rating-avatars img { width: 100px; filter: brightness(10) grayscale(1); opacity: 0.6; }
+
+/* GUARANTEE */
+.guarantee-section { background: #f0f4f8; padding: 80px 0; }
+.guarantee-card { background: #fff; border: 2px solid #bbdefb; border-radius: 16px; padding: 48px; display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; max-width: 820px; margin: 0 auto; box-shadow: 0 4px 24px rgba(21,101,192,0.08); }
+@media (max-width: 600px) { .guarantee-card { grid-template-columns: 1fr; text-align: center; padding: 36px 24px; } }
+.guarantee-card__img { width: 130px; flex-shrink: 0; }
+.guarantee-card h3 { font-size: 26px; font-weight: 800; margin-bottom: 14px; color: #0d1f35; }
+.guarantee-card p { font-size: 16px; color: #4a6278; line-height: 1.75; }
+.guarantee-card p strong { color: #0d1f35; }
+
+/* TESTIMONIALS */
+.testimonials-section { background: #fff; padding: 80px 0; }
+.testimonials-section h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; text-align: center; max-width: 760px; margin: 0 auto 48px; color: #0d1f35; }
+.testi-screenshots { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 56px; }
+.testi-screenshots img { width: calc(50% - 6px); max-width: 440px; border-radius: 10px; border: 1px solid #ccd8e4; box-shadow: 0 2px 12px rgba(21,101,192,0.07); }
+@media (max-width: 560px) { .testi-screenshots img { width: 100%; } }
+.testi-list { display: flex; flex-direction: column; gap: 24px; max-width: 740px; margin: 0 auto; }
+.testi-item { background: #f0f7ff; border: 1px solid #bbdefb; border-radius: 14px; padding: 32px; }
+.testi-item__stars img { height: 20px; margin-bottom: 8px; }
+.testi-item__handle { font-size: 13px; color: #7a9ab8; margin-bottom: 12px; }
+.testi-item__quote { font-size: 16px; color: #2e4156; line-height: 1.75; margin-bottom: 20px; }
+.testi-item__author { display: flex; align-items: center; gap: 14px; }
+.testi-item__photo { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #bbdefb; }
+.testi-item__name { font-weight: 800; font-size: 15px; color: #0d1f35; }
+.testi-item__role { font-size: 13px; color: #7a9ab8; }
+
+/* FAQ */
+.faq-section { background: #f0f4f8; padding: 80px 0; }
+.faq-section__inner { display: grid; grid-template-columns: auto 1fr; gap: 56px; align-items: start; }
+@media (max-width: 700px) { .faq-section__inner { grid-template-columns: 1fr; } .faq-photo { display: none; } }
+.faq-photo { width: 200px; flex-shrink: 0; border-radius: 12px; }
+.faq-content h2 { font-size: clamp(26px, 3.5vw, 40px); font-weight: 800; margin-bottom: 8px; color: #0d1f35; }
+.faq-content__sub { font-size: 17px; color: #4a6278; margin-bottom: 40px; }
+.faq-item { border-bottom: 1px solid #ccd8e4; padding: 22px 0; }
+.faq-item:first-of-type { border-top: 1px solid #ccd8e4; }
+.faq-q { font-size: 17px; font-weight: 800; color: #0d1f35; margin-bottom: 10px; }
+.faq-a { font-size: 15px; color: #4a6278; line-height: 1.8; }
+.faq-a strong { color: #0d1f35; }
+.faq-a a { color: #1565c0; }
+
+/* FINAL CTA */
+.final-cta { background: linear-gradient(150deg, #0d47a1 0%, #1565c0 50%, #1e88e5 100%); padding: 80px 0; text-align: center; }
+.final-cta__pre { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.55); margin-bottom: 12px; }
+.final-cta h2 { font-size: clamp(26px, 3.8vw, 48px); font-weight: 800; max-width: 700px; margin: 0 auto 36px; color: #fff; }
+
+/* FOOTER */
+footer { background: #0d1f35; border-top: 1px solid #1e3a56; padding: 36px 0; }
+.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+.footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-links a { font-size: 13px; color: rgba(255,255,255,0.45); transition: color 0.2s; }
+.footer-links a:hover { color: rgba(255,255,255,0.9); }
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+
+@media (max-width: 560px) {
+  .hero { padding: 48px 0 60px; }
+  .feature-item { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="container">
+
+    <!-- Author badge -->
+    <div style="display:flex;justify-content:center;">
+      <a href="https://salesignition.com" class="author-link">
+        <img class="author-photo" src="https://www.conversion.care/wp-content/uploads/2024/08/jaka_smid_conversion_designer.png" alt="Steven — Sales Ignition" />
+        <div class="author-text">
+          <span class="author-name">Steven</span>
+          <span class="author-role">Email Marketing Consultant</span>
+        </div>
+        <img class="verified-icon" src="https://www.conversion.care/wp-content/uploads/2024/08/verified_icon.png" alt="Verified" />
+      </a>
+    </div>
+
+    <h1 class="hero__headline">
+      The Klaviyo Retention Dashboard That Shows <strong>Every Metric That Drives Repeat Revenue</strong>
+    </h1>
+
+    <p class="hero__sub">
+      Stop switching between Klaviyo and Shopify. This dashboard combines your email and store data into one clear view — so you always know how your retention is tracking.
+    </p>
+
+    <div class="hero__cta-block">
+      <a href="https://saleignite.spiffy.co/checkout/dashboard" class="btn-orange btn-orange--large">
+        GET MY RETENTION DASHBOARD NOW!<br />
+        <span style="font-size:13px;font-weight:600;opacity:0.85;text-transform:none;letter-spacing:0;">And see exactly where your repeat revenue is coming from</span>
+      </a>
+    </div>
+
+    <!-- Platform logos -->
+    <div class="platform-logos">
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/klaviyo.png" alt="Klaviyo" />
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/activecampaign.png" alt="Shopify" />
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/omnisend.png" alt="DTC Brands" />
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/andother.png" alt="and more" />
+    </div>
+
+    <!-- Social proof -->
+    <div class="social-proof">
+      <div class="social-proof__number">120+</div>
+      <img class="social-proof__avatars" src="https://www.conversion.care/wp-content/uploads/2024/08/Group-574.png" alt="Customers" />
+      <p class="social-proof__text">DTC brands already tracking their retention metrics with this dashboard</p>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     MIND-BLOWING FACT
+     ============================================================ -->
+<section class="fact-section">
+  <div class="container">
+    <span class="eyebrow">Here's a mind-blowing fact for you</span>
+
+    <h2 class="fact-section__headline">
+      Existing customers can make up to <em>40% of your total online store revenue</em> — and spend 67% more per order than new ones?
+    </h2>
+
+    <div class="fact-accent">And that's with<br /><span>$0 extra ad spend!</span></div>
+
+    <p>The most profitable DTC brands aren't growing by endlessly chasing cold traffic. Obviously 😅</p>
+    <p>They're winning by knowing EXACTLY which retention signals to watch — and acting on them at EXACTLY the right times.</p>
+
+    <h2>The 3 biggest reasons most online stores are leaving repeat revenue on the table:</h2>
+
+    <ul class="fact-list">
+      <li>They have <strong>no unified view</strong> of their Klaviyo and Shopify data — they're guessing.</li>
+      <li>They're not tracking <strong>repeat purchase rate or LTV</strong> on a weekly basis.</li>
+      <li>Their <strong>flow and segment performance</strong> is a complete blind spot.</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     WRONG VS RIGHT
+     ============================================================ -->
+<section class="compare-section">
+  <div class="container">
+
+    <h2>Yet, 95% of DTC brands NEVER get full visibility into their email retention</h2>
+
+    <div class="compare-grid">
+      <div class="compare-col compare-col--bad">
+        <h3>❌ Here's where most brands go wrong:</h3>
+        <ul class="compare-list">
+          <li><span class="icon">✕</span> Checking Klaviyo and Shopify separately with no connected view</li>
+          <li><span class="icon">✕</span> Not tracking repeat purchase rate or customer LTV weekly</li>
+          <li><span class="icon">✕</span> No visibility into which flows are actually generating revenue</li>
+          <li><span class="icon">✕</span> Guessing at list health and deliverability trends</li>
+          <li><span class="icon">✕</span> No clear picture of which segments drive the most value</li>
+          <li><span class="icon">✕</span> Reacting to revenue drops instead of spotting them early</li>
+        </ul>
+      </div>
+
+      <div class="compare-col compare-col--good">
+        <h3>✅ Here's what the MOST PROFITABLE brands do right:</h3>
+        <ul class="compare-list">
+          <li><span class="icon">✓</span> One dashboard that combines Shopify orders with Klaviyo email data</li>
+          <li><span class="icon">✓</span> Track repeat purchase rate, LTV, and purchase frequency every week</li>
+          <li><span class="icon">✓</span> See exactly which flows and campaigns are driving revenue</li>
+          <li><span class="icon">✓</span> Monitor list health, open rates, and unsubscribe trends at a glance</li>
+          <li><span class="icon">✓</span> Know which segments are worth the most — and market to them smarter</li>
+          <li><span class="icon">✓</span> Catch problems before they become costly revenue drops</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="compare-section__cta-text">
+      Again, DO NOT leave retention revenue on the table like 95% of DTC brands do!<br /><br />
+      That's why I built <strong>The Klaviyo Retention Dashboard</strong> — a single connected view of every metric that tells you how your email program is driving repeat business. No more tab-switching. No more guessing. No more building reports from scratch in a spreadsheet.
+    </p>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     PRODUCT INTRO
+     ============================================================ -->
+<section class="product-intro">
+  <div class="container">
+
+    <h2>The Klaviyo Retention Dashboard is the only view you need to master DTC email retention</h2>
+
+    <img class="product-intro__img" src="https://www.conversion.care/wp-content/uploads/2024/08/email-checklist-previeew-1024x621.png" alt="Klaviyo Retention Dashboard Preview" />
+
+    <p>I built this dashboard after years of managing email programs for DTC brands. Every flow, segment, metric, and signal you need to understand your retention performance is wired up and waiting for you.</p>
+
+    <p>This exact dashboard has been used to <strong>identify thousands of dollars in hidden repeat revenue</strong> for brands at every stage.</p>
+
+    <!-- Single testimonial -->
+    <div class="inline-testi">
+      <img class="inline-testi__stars" src="https://www.conversion.care/wp-content/uploads/2024/08/yellow-strs.svg" alt="5 stars" />
+      <p class="inline-testi__handle">@dtcfounder · via Twitter</p>
+      <p class="inline-testi__quote">I've tried a dozen dashboards. This one is the first that actually connects what's happening in Klaviyo to what's happening in Shopify. <strong>Game-changing for retention tracking.</strong> Huge 👏</p>
+      <div class="inline-testi__author">
+        <img class="inline-testi__author-img" src="https://www.conversion.care/wp-content/uploads/2024/08/member.svg" alt="Member" />
+        <div>
+          <div class="inline-testi__name">James R.</div>
+          <div class="inline-testi__role">DTC Brand Owner</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     FEATURES
+     ============================================================ -->
+<section class="features-section" id="features">
+  <div class="container">
+
+    <div class="features-section__intro">
+      <h2>This Retention Dashboard includes:</h2>
+    </div>
+
+    <!-- Feature 1 -->
+    <div class="feature-item">
+      <h2 class="feature-item__headline">Unified Revenue View — See your Shopify + Klaviyo numbers side by side, updated automatically</h2>
+      <p class="feature-item__text">
+        Stop the tab-switching. Total store revenue, email-attributed revenue, repeat purchase revenue, and flow-driven revenue — all in one place. Get the full picture of how your email program is performing against your store in real time.
+      </p>
+      <img class="feature-item__img" src="https://www.conversion.care/wp-content/uploads/2024/08/automations@2x.png" alt="Unified Revenue Dashboard" />
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="feature-item">
+      <h2 class="feature-item__headline">Retention KPIs that actually tell you if your brand is healthy — repeat purchase rate, LTV, purchase frequency</h2>
+      <p class="feature-item__text">
+        These are the metrics that separate a thriving DTC brand from one that's stuck on the acquisition treadmill. Repeat purchase rate, customer lifetime value at 30/60/90 days, purchase frequency by cohort — all tracked weekly so you always know where you stand.
+      </p>
+      <img class="feature-item__img" src="https://www.conversion.care/wp-content/uploads/2024/08/sale-event@2x.png" alt="Retention KPIs" />
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="feature-item">
+      <h2 class="feature-item__headline">Flow Performance Rankings — know exactly which automations are earning their keep this week</h2>
+      <p class="feature-item__text">
+        Your flows run 24/7 — but do you actually know which ones are generating revenue right now versus ones that are coasting? The dashboard ranks every flow by revenue, open rate, and click rate so you always know where to invest your optimization time.
+      </p>
+      <img class="feature-item__img" src="https://www.conversion.care/wp-content/uploads/2024/08/newsletter@2x.png" alt="Flow Performance" />
+    </div>
+
+    <!-- Feature 4 -->
+    <div class="feature-item">
+      <h2 class="feature-item__headline">List Health &amp; Deliverability at a glance — catch problems before they tank your revenue</h2>
+      <p class="feature-item__text">
+        A great retention strategy means nothing if your emails aren't landing in the inbox. Track deliverability health, open rates vs. your 90-day average, unsubscribe trends, and net list growth — all in one view, with alerts when something needs your attention.
+      </p>
+      <img class="feature-item__img" src="https://www.conversion.care/wp-content/uploads/2024/08/popup@2x.png" alt="List Health" />
+    </div>
+
+    <!-- Feature 5 -->
+    <div class="feature-item">
+      <h2 class="feature-item__headline">Segment Performance — see which audiences are worth the most so you know exactly where to focus</h2>
+      <p class="feature-item__text">
+        Not all subscribers are equal. The dashboard breaks down revenue, AOV, and repeat rate by segment — VIPs, active buyers, at-risk customers, and lapsed subscribers — so you know exactly where to concentrate your email efforts to drive the most incremental revenue.
+      </p>
+      <img class="feature-item__img" src="https://www.conversion.care/wp-content/uploads/2024/08/test-creative@2x-1.png" alt="Segment Performance" />
+    </div>
+
+    <!-- Feature 6 -->
+    <div class="feature-item">
+      <h2 class="feature-item__headline">Campaign Analytics Breakdown — see what's working in your sends so you can replicate your winners</h2>
+      <p class="feature-item__text">
+        Your campaigns tell a story — if you know how to read them. The dashboard surfaces your best-performing sends by revenue, open rate, and click-to-purchase rate, so you can stop guessing what works and start doubling down on proven formats.
+      </p>
+      <img class="feature-item__img" src="https://www.conversion.care/wp-content/uploads/2024/08/delivery@2x-1.png" alt="Campaign Analytics" />
+    </div>
+
+    <!-- Feature 7 -->
+    <div class="feature-item">
+      <h2 class="feature-item__headline">Winback Opportunity Tracker — see exactly which customers are about to churn before you lose them</h2>
+      <p class="feature-item__text">
+        The most profitable retention move you can make is catching at-risk customers before they lapse. The dashboard flags your highest-value customers who haven't purchased recently — so you can act before they're gone for good.
+      </p>
+      <img class="feature-item__img" src="https://www.conversion.care/wp-content/uploads/2024/08/priority@2x.png" alt="Winback Tracker" />
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     PRICING
+     ============================================================ -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+
+    <p class="pricing-section__pre">It's time for you to</p>
+    <h2>Get the Klaviyo Retention Dashboard and finally see your retention clearly!</h2>
+
+    <div class="pricing-section__mockup">
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/image-33.png" alt="Retention Dashboard" style="border-radius:12px;" />
+    </div>
+
+    <div class="pricing-grid">
+
+      <!-- Card 1: Dashboard -->
+      <div class="pricing-card pricing-card--featured">
+        <div class="pricing-card__badge">Most Popular</div>
+        <div class="pricing-card__label">Retention Dashboard — Pro</div>
+        <p class="pricing-card__subtitle">"Dashboard + 8 expert training videos"</p>
+
+        <div class="pricing-card__price">
+          <span class="price-old">$197</span>
+          <span class="price-main">$97</span>
+        </div>
+        <p class="pricing-card__note">*One-time payment · Instant access</p>
+        <div class="pricing-card__sale-tag">51% OFF — Today Only</div>
+
+        <hr />
+        <h3>Get the complete Klaviyo Retention Dashboard that includes:</h3>
+        <ul class="pricing-features">
+          <li>Unified Shopify + Klaviyo revenue view</li>
+          <li>Retention KPIs — repeat purchase rate, LTV &amp; purchase frequency</li>
+          <li>Flow performance rankings by revenue</li>
+          <li>List health &amp; deliverability monitoring</li>
+          <li>Segment performance breakdown (VIP, Active, At-Risk, Lapsed)</li>
+          <li>Campaign analytics breakdown</li>
+          <li>Winback opportunity tracker</li>
+          <li>🎁 BONUS: Retention benchmark scorecard</li>
+          <li style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-top:4px;color:#fff;font-weight:700;">🎬 8 Pro Training Videos included:</li>
+          <li>Video 1 — Dashboard setup &amp; connecting Shopify + Klaviyo (step-by-step)</li>
+          <li>Video 2 — Reading your retention KPIs and what the numbers mean</li>
+          <li>Video 3 — How to use the flow rankings to find your biggest revenue leaks</li>
+          <li>Video 4 — List health deep-dive: how to spot and fix deliverability problems fast</li>
+          <li>Video 5 — Segment performance: how to find your highest-value audiences and market to them smarter</li>
+          <li>Video 6 — Campaign analytics breakdown: how to identify your winners and replicate them</li>
+          <li>Video 7 — Winback strategy: how to use the tracker to recover at-risk customers before they lapse</li>
+          <li>Video 8 — Pro tips: advanced ways to use the dashboard to surface hidden revenue opportunities</li>
+        </ul>
+
+        <a href="https://saleignite.spiffy.co/checkout/dashboard" class="btn-orange">Get My Retention Dashboard now!</a>
+
+        <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.35);margin-top:10px;">
+          You will be redirected to a secure checkout.<br />Instant access after payment.
+        </p>
+
+        <div class="trust-row" style="text-align:center;margin-top:16px;">
+          <img src="https://www.conversion.care/wp-content/uploads/2024/08/image-25-1.png" alt="Accepted payments" style="max-width:260px;margin:0 auto;" />
+        </div>
+      </div>
+
+      <!-- Card 2: Done-For-You -->
+      <div class="pricing-card">
+        <div class="pricing-card__label">Done-For-You</div>
+        <div class="pricing-card__title">Managed Email Retention</div>
+        <p class="pricing-card__subtitle">Full-service email management package</p>
+
+        <div class="pricing-card__price">
+          <span class="price-main" style="font-size:44px;">$2,997</span>
+          <span class="price-period">/month</span>
+        </div>
+        <p class="pricing-card__note">*Monthly retainer · Cancel anytime</p>
+
+        <hr />
+        <h3>By purchasing Managed Email Retention, you will get:</h3>
+        <ul class="pricing-features">
+          <li>Full Klaviyo setup &amp; Shopify integration</li>
+          <li>Retention Dashboard setup &amp; configuration</li>
+          <li>4× email campaigns per month</li>
+          <li>5× automated flow builds (with A/B testing)</li>
+          <li>2× pop-ups — sitewide &amp; exit intent</li>
+          <li>Weekly retention reports &amp; recommendations</li>
+          <li>Two 30-min strategy calls per month</li>
+        </ul>
+
+        <a href="mailto:steven@salesignition.com" class="btn-outline">Book a CALL!</a>
+
+        <div style="text-align:center;margin-top:14px;font-size:13px;color:rgba(255,255,255,0.4);">
+          Click above to schedule a free strategy call to discuss your retention goals.
+        </div>
+
+        <div class="trust-row" style="text-align:center;margin-top:20px;">
+          <img src="https://www.conversion.care/wp-content/uploads/2024/08/image-26-1.png" alt="Secured shopping" style="max-width:200px;margin:0 auto;" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Rating / social proof -->
+    <div class="rating-block">
+      <div class="rating-number">4.9</div>
+      <div>
+        <img class="rating-stars" src="https://www.conversion.care/wp-content/uploads/2024/08/yellow-strs.svg" alt="5 stars" />
+        <div class="rating-count">Based on 120+ ratings</div>
+      </div>
+      <img class="rating-avatars" src="https://www.conversion.care/wp-content/uploads/2023/10/Group-574.png" alt="Happy customers" />
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     GUARANTEE
+     ============================================================ -->
+<section class="guarantee-section">
+  <div class="container">
+    <div class="guarantee-card">
+      <img class="guarantee-card__img" src="https://www.conversion.care/wp-content/uploads/2024/08/image-27-3.png" alt="Money-back guarantee" />
+      <div>
+        <h3>Full 14-Day Money-Back Guarantee</h3>
+        <p>I'm confident the Retention Dashboard will change how you see your business. And I understand the importance of peace of mind. That's why I'm giving you a no-questions-asked 14-day money-back guarantee.</p>
+        <br />
+        <p>If — for whatever reason — you feel this dashboard isn't for you, simply message me. I'll <strong>refund 100% of your money, immediately,</strong> with zero strings attached. Your success and happiness is my top priority.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section class="testimonials-section">
+  <div class="container">
+
+    <h2>Why 120+ DTC brands and email marketers ❤️ the Retention Dashboard</h2>
+
+    <!-- Screenshot gallery -->
+    <div class="testi-screenshots">
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/real-twitter-testimonial-1024x574.png" alt="Testimonial screenshot" />
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/testimonial1.png" alt="Testimonial" />
+      <img src="https://www.conversion.care/wp-content/uploads/2023/10/testimonial2.png" alt="Testimonial" />
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/tweet-2.png" alt="Testimonial tweet" />
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/leigh.png" alt="Testimonial" />
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/testimonial3.png" alt="Testimonial" />
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/testimonial4.png" alt="Testimonial" />
+    </div>
+
+    <!-- Individual testimonials -->
+    <div class="testi-list">
+
+      <div class="testi-item">
+        <img class="testi-item__stars" src="https://www.conversion.care/wp-content/uploads/2024/08/yellow-strs.svg" alt="5 stars" />
+        <p class="testi-item__handle">Alex T. · March 2025 via email</p>
+        <p class="testi-item__quote">I used to spend two hours every Monday piecing together our Shopify and Klaviyo numbers. Now I open the dashboard and I have everything in under a minute. It's completely changed how I run our weekly marketing review. The flow rankings alone were worth the price — I immediately found two underperforming flows I had no idea were dragging.</p>
+        <div class="testi-item__author">
+          <img class="testi-item__photo" src="https://www.conversion.care/wp-content/uploads/2024/08/ela.jpeg" alt="Alex T." />
+          <div>
+            <div class="testi-item__name">Alex T.</div>
+            <div class="testi-item__role">Head of Marketing, DTC Apparel Brand</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-item">
+        <img class="testi-item__stars" src="https://www.conversion.care/wp-content/uploads/2024/08/yellow-strs.svg" alt="5 stars" />
+        <p class="testi-item__quote">The segment performance view paid for itself in the first week. We discovered our VIP segment was 3× more likely to repurchase — but we were sending them the same cadence as everyone else. We fixed that immediately and saw a 22% lift in repeat purchases within 30 days.</p>
+        <div class="testi-item__author">
+          <img class="testi-item__photo" src="https://www.conversion.care/wp-content/uploads/2024/08/kannan.jpeg" alt="Rachel M." />
+          <div>
+            <div class="testi-item__name">Rachel M.</div>
+            <div class="testi-item__role">Email Marketing Manager, Beauty Brand</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-item">
+        <img class="testi-item__stars" src="https://www.conversion.care/wp-content/uploads/2024/08/yellow-strs.svg" alt="5 stars" />
+        <p class="testi-item__quote">As a Klaviyo consultant, this dashboard is a no-brainer. I use the reports in every client QBR. It looks incredibly professional and takes me about 5 minutes to put together. My clients love seeing their retention metrics laid out this clearly — and honestly, it's helped me spot upsell opportunities I would have missed otherwise.</p>
+        <div class="testi-item__author">
+          <img class="testi-item__photo" src="https://www.conversion.care/wp-content/uploads/2024/08/oyekunle.jpeg" alt="James K." />
+          <div>
+            <div class="testi-item__name">James K.</div>
+            <div class="testi-item__role">Klaviyo Consultant &amp; Agency Owner</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-item">
+        <img class="testi-item__stars" src="https://www.conversion.care/wp-content/uploads/2024/08/yellow-strs.svg" alt="5 stars" />
+        <p class="testi-item__quote">This dashboard is like having a retention co-pilot watching your numbers 24/7. The winback tracker alone flagged over 400 at-risk customers I had no idea were about to lapse. We ran a campaign to that segment and recovered $14,000 in revenue in a single weekend. Absolutely worth every penny.</p>
+        <div class="testi-item__author">
+          <img class="testi-item__photo" src="https://www.conversion.care/wp-content/uploads/2023/10/sergio.jpeg" alt="Marcus L." />
+          <div>
+            <div class="testi-item__name">Marcus L.</div>
+            <div class="testi-item__role">Founder, DTC Supplement Brand</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="faq-section__inner">
+
+      <img class="faq-photo" src="https://www.conversion.care/wp-content/uploads/2024/08/jaka_smid-removebg-preview-1-1.png" alt="Steven — Sales Ignition" />
+
+      <div class="faq-content">
+        <h2>Got some remaining questions?</h2>
+        <p class="faq-content__sub">That's completely normal. 😃 I put together the most common ones below.</p>
+
+        <div class="faq-item">
+          <div class="faq-q">1️⃣ What tools does the dashboard connect to?</div>
+          <div class="faq-a">The Retention Dashboard is built to pull data from <strong>Shopify</strong> (orders, customers, AOV, repeat purchase rate) and <strong>Klaviyo</strong> (email metrics, flow revenue, list health, segment performance). No other tools or subscriptions required.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">2️⃣ Do I need to know how to code to use it?</div>
+          <div class="faq-a">No code required. The dashboard includes a step-by-step setup guide and a video walkthrough. If you can use Klaviyo, you can connect this. Most customers are fully set up within 30 minutes.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">3️⃣ What's included in the one-time purchase?</div>
+          <div class="faq-a">You get the complete dashboard with all 7 modules: unified revenue view, retention KPIs, flow performance rankings, list health monitoring, segment performance, campaign analytics, and the winback opportunity tracker — plus the retention benchmark scorecard bonus. One price, permanent access.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">4️⃣ Can I use this for clients if I'm an agency or consultant?</div>
+          <div class="faq-a">Absolutely. The dashboard is used by email consultants and agencies across the country. You can set it up for any client brand and use the reporting view in client meetings. If you manage multiple brands, reach out about our agency pricing.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">5️⃣ How do I get access after purchase?</div>
+          <div class="faq-a">You'll receive access immediately after checkout via email — including the setup guide and walkthrough video. Everything you need to get your first metrics loading is in one place. Most people are fully connected within 30 minutes.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">6️⃣ I still have questions...</div>
+          <div class="faq-a">No problem — reach out directly at <a href="mailto:steven@salesignition.com">steven@salesignition.com</a> and I'll get back to you within one business day. <strong>I'm a one-person shop and I actually answer my own email.</strong></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<section class="final-cta">
+  <div class="container">
+    <p class="final-cta__pre">AND IF YOU'RE ALL CAUGHT UP…</p>
+    <h2>It's time for you to see your retention clearly TODAY!</h2>
+    <a href="https://saleignite.spiffy.co/checkout/dashboard" class="btn-orange btn-orange--large">GET MY RETENTION DASHBOARD NOW!</a>
+
+    <!-- Social proof repeat -->
+    <div class="social-proof" style="margin-top:52px;">
+      <div class="social-proof__number">120+</div>
+      <img class="social-proof__avatars" src="https://www.conversion.care/wp-content/uploads/2024/08/yellow-strs.svg" alt="Stars" style="width:80px;" />
+      <p class="social-proof__text">DTC brands already tracking their email retention with this dashboard</p>
+      <img src="https://www.conversion.care/wp-content/uploads/2024/08/Group-574.png" alt="Customers" style="width:110px;" />
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Refund Policy</a>
+      </div>
+      <p class="footer-copy">© 2025 Sales Ignition LLC &nbsp;·&nbsp; Get in touch: steven@salesignition.com</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
